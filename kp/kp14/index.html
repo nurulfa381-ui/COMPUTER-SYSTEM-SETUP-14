@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KP14 - Pengendalian Perkakasan Tambahan Komputer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <main class="kp-page">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">IT-020-3:2013-C01/KP(14/15)</p>
+        <h1>PENGENDALIAN PERKAKASAN TAMBAHAN KOMPUTER</h1>
+      </div>
+      <div class="toolbar">
+        <button onclick="location.href='../../dashboard.html'">DASHBOARD</button>
+        <button onclick="toggleProjector()">MOD PROJEKTOR</button>
+        <button onclick="toggleFullscreen()">SKRIN PENUH</button>
+        <button onclick="speakCurrent()">🔊 DENGAR</button>
+      </div>
+    </header>
+
+    <section class="progress-wrap">
+      <div class="progress"><span id="progressBar"></span></div>
+      <strong id="slideCounter">1 / 40</strong>
+    </section>
+
+    <section id="slideStage" class="slide-stage"></section>
+
+    <nav class="nav-controls">
+      <button id="prevBtn" onclick="changeSlide(-1)">← SEBELUM</button>
+      <button onclick="showMenu()">☰ SENARAI</button>
+      <button id="nextBtn" onclick="changeSlide(1)">SETERUSNYA →</button>
+    </nav>
+
+    <section id="activityPanel" class="activity-panel">
+      <h2>LATIHAN INTERAKTIF KP14</h2>
+      <div class="activity-tabs">
+        <button onclick="showActivity('matching')">PADANAN</button>
+        <button onclick="showActivity('sequence')">SUSUN LANGKAH</button>
+        <button onclick="showActivity('packing')">SIMULASI PACKING LIST</button>
+        <button onclick="showActivity('uat')">SIMULASI UAT</button>
+      </div>
+      <div id="activityContent"></div>
+    </section>
+
+    <div id="menuModal" class="modal hidden">
+      <div class="modal-card">
+        <button class="close" onclick="hideMenu()">✕</button>
+        <h2>SENARAI 40 PAPARAN</h2>
+        <div id="slideMenu" class="slide-menu"></div>
+      </div>
+    </div>
+  </main>
+  <script src="../../storage.js?v=1"></script>
+  <script src="script.js?v=1"></script>
+</body>
+</html>
