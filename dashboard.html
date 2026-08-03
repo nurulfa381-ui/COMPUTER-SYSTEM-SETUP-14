@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard KP14</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <main class="dashboard">
+    <header class="panel dashboard-header">
+      <div class="profile">
+        <div id="avatarDisplay" class="avatar-large">🧑‍💻</div>
+        <div>
+          <p class="eyebrow">COMPUTER SYSTEM SET-UP • C01</p>
+          <h1 id="nameDisplay">Pelatih</h1>
+          <p id="idDisplay">ID: -</p>
+        </div>
+      </div>
+      <div class="button-row">
+        <button class="secondary" onclick="toggleFullscreen()">SKRIN PENUH</button>
+        <button class="danger" onclick="logout()">LOG KELUAR</button>
+      </div>
+    </header>
+
+    <section class="stats">
+      <article class="stat"><span>XP</span><strong id="xpStat">50</strong></article>
+      <article class="stat"><span>Coin</span><strong id="coinStat">0</strong></article>
+      <article class="stat"><span>KP14</span><strong id="kpStat">0%</strong></article>
+      <article class="stat"><span>KT14</span><strong id="ktStat">-</strong></article>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">MISSION 14</p>
+      <h2>PENGENDALIAN PERKAKASAN TAMBAHAN KOMPUTER</h2>
+      <div class="module-grid">
+        <article class="module-card">
+          <div class="module-icon">📘</div>
+          <h3>KP14</h3>
+          <p>40 paparan nota, aktiviti, animasi dan simulasi pengendalian aset.</p>
+          <button class="primary full" onclick="location.href='kp/kp14/index.html'">MULA KP14</button>
+        </article>
+        <article class="module-card">
+          <div class="module-icon">📝</div>
+          <h3>KT14</h3>
+          <p>Jawapan pendek dan padanan berdasarkan kertas tugasan rasmi.</p>
+          <button class="secondary full" onclick="location.href='kt/kt14/index.html'">BUKA KT14</button>
+        </article>
+      </div>
+    </section>
+  </main>
+  <script src="storage.js?v=1"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const p = C01K14Storage.requireProfile();
+      avatarDisplay.textContent = p.avatar;
+      nameDisplay.textContent = p.name;
+      idDisplay.textContent = `ID: ${p.id}`;
+      xpStat.textContent = p.xp || 50;
+      coinStat.textContent = p.coins || 0;
+      kpStat.textContent = `${p.kp14Progress || 0}%`;
+      ktStat.textContent = p.officialMarks?.[14]?.score ?? p.scores?.[14] ?? "-";
+    });
+    function toggleFullscreen(){
+      if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+    function logout(){
+      sessionStorage.removeItem("c01k14_session");
+      location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

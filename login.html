@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Pelatih</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <main class="landing">
+    <section class="panel login-card">
+      <p class="eyebrow">MOD PELATIH</p>
+      <h1>LOGIN PELATIH</h1>
+      <label>Nama Penuh
+        <input id="nameInput" type="text" placeholder="Masukkan nama penuh">
+      </label>
+      <label>ID Pelatih / No. Kad Pengenalan
+        <input id="idInput" type="text" placeholder="Masukkan ID pelatih">
+      </label>
+      <fieldset>
+        <legend>Pilih Avatar</legend>
+        <div class="avatar-grid">
+          <button class="avatar selected" data-avatar="🧑‍💻">🧑‍💻</button>
+          <button class="avatar" data-avatar="👩‍💻">👩‍💻</button>
+          <button class="avatar" data-avatar="🧑‍🔧">🧑‍🔧</button>
+          <button class="avatar" data-avatar="👩‍🔧">👩‍🔧</button>
+          <button class="avatar" data-avatar="🤖">🤖</button>
+          <button class="avatar" data-avatar="🦸">🦸</button>
+        </div>
+      </fieldset>
+      <p id="loginMessage" class="message"></p>
+      <button class="primary full" onclick="saveLogin()">SIMPAN DAN TERUSKAN</button>
+    </section>
+  </main>
+  <script src="storage.js?v=1"></script>
+  <script>
+    let avatar = "🧑‍💻";
+    document.querySelectorAll(".avatar").forEach(btn => {
+      btn.addEventListener("click", e => {
+        e.preventDefault();
+        document.querySelectorAll(".avatar").forEach(x => x.classList.remove("selected"));
+        btn.classList.add("selected");
+        avatar = btn.dataset.avatar;
+      });
+    });
+    function saveLogin(){
+      const name = nameInput.value.trim();
+      const id = idInput.value.trim();
+      if(!name || !id){
+        loginMessage.textContent = "Sila masukkan nama penuh dan ID pelatih.";
+        return;
+      }
+      C01K14Storage.saveProfile({name,id,avatar});
+      location.href = "dashboard.html";
+    }
+  </script>
+</body>
+</html>
