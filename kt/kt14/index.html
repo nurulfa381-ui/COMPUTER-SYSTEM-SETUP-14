@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KT14 - Pengendalian Perkakasan Tambahan Komputer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <main class="kt-page">
+    <header class="panel header">
+      <div>
+        <p class="eyebrow">IT-020-3:2013-C01/KT(14/15)</p>
+        <h1>KT14: PENGENDALIAN PERKAKASAN TAMBAHAN KOMPUTER</h1>
+        <p>Masa cadangan: 10 minit • Markah penuh: 20 • Lulus: 60%</p>
+      </div>
+      <button onclick="location.href='../../kp/kp14/index.html'">KEMBALI KP14</button>
+    </header>
+
+    <section class="panel candidate">
+      <div><span>Nama</span><strong id="candidateName">-</strong></div>
+      <div><span>ID Pelatih</span><strong id="candidateId">-</strong></div>
+      <div><span>Percubaan</span><strong id="attemptDisplay">1</strong></div>
+      <div><span>Status</span><strong id="statusDisplay">BELUM DINILAI</strong></div>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">BAHAGIAN A • 10 MARKAH</p>
+      <h2>SOALAN JAWAPAN PENDEK</h2>
+      <article class="question">
+        <h3>1. Terangkan definisi penyediaan logistik. (2 markah)</h3>
+        <textarea id="a1" rows="4" placeholder="Tulis jawapan anda"></textarea>
+      </article>
+      <article class="question">
+        <h3>2. Terangkan maksud UAT. (4 markah)</h3>
+        <textarea id="a2" rows="5" placeholder="Tulis jawapan anda"></textarea>
+      </article>
+      <article class="question">
+        <h3>3. Apakah kegunaan tagging aset dalam sebuah syarikat? (4 markah)</h3>
+        <textarea id="a3" rows="5" placeholder="Tulis jawapan anda"></textarea>
+      </article>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">BAHAGIAN B • 10 MARKAH</p>
+      <h2>SOALAN PADANAN</h2>
+      <p>Susunan pilihan jawapan diacak setiap kali halaman dibuka.</p>
+      <div id="matchingContainer"></div>
+    </section>
+
+    <section class="panel submit-panel">
+      <button class="primary" id="submitBtn" onclick="submitKT14()">HANTAR JAWAPAN</button>
+      <button onclick="location.href='../../dashboard.html'">DASHBOARD</button>
+      <div id="resultPanel"></div>
+    </section>
+  </main>
+  <script src="../../storage.js?v=1"></script>
+  <script src="script.js?v=1"></script>
+</body>
+</html>
