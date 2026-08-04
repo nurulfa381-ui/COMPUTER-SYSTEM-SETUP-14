@@ -1,1 +1,243 @@
-<!DOCTYPE html><html lang="ms"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login Guru</title><link rel="stylesheet" href="style.css"></head><body><main class="center"><section class="panel"><h1>LOGIN PEGAWAI PENILAI</h1><input id="name" placeholder="Nama Pegawai Penilai"><input id="pin" type="password" placeholder="PIN"><p id="msg"></p><button id="go">LOG MASUK</button><p>PIN awal: 1515</p></section></main><script type="module">import{ensureFirebaseLogin}from'../firebase-config.js';go.onclick=async()=>{if(!name.value.trim()||pin.value!==(localStorage.getItem('c01_teacher_pin_v2')||'1515')){msg.textContent='Nama atau PIN tidak tepat.';return}await ensureFirebaseLogin();sessionStorage.setItem('c01_teacher_session_v2',JSON.stringify({name:name.value.trim()}));location.href='dashboard.html'};</script></body></html>
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=5"
+  >
+
+  <meta
+    http-equiv="Cache-Control"
+    content="no-cache, no-store, must-revalidate"
+  >
+
+  <meta
+    http-equiv="Pragma"
+    content="no-cache"
+  >
+
+  <meta
+    http-equiv="Expires"
+    content="0"
+  >
+
+  <title>Login Pegawai Penilai C01</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css?v=20260805-2"
+  >
+</head>
+
+<body>
+
+  <main class="center-page">
+
+    <section class="panel login-panel">
+
+      <p class="eyebrow">
+        FIREBASE TEACHER MODULE • C01
+      </p>
+
+      <h1>
+        LOGIN PEGAWAI PENILAI
+      </h1>
+
+      <p class="muted">
+        Masukkan nama Pegawai Penilai dan PIN guru.
+      </p>
+
+      <label for="teacherName">
+        Nama Pegawai Penilai
+      </label>
+
+      <input
+        id="teacherName"
+        type="text"
+        placeholder="Masukkan nama penuh"
+        autocomplete="name"
+      >
+
+      <label for="teacherPin">
+        PIN Guru
+      </label>
+
+      <input
+        id="teacherPin"
+        type="password"
+        inputmode="numeric"
+        placeholder="Masukkan PIN"
+      >
+
+      <p
+        id="loginMessage"
+        class="message"
+        aria-live="polite"
+      ></p>
+
+      <button
+        id="loginButton"
+        class="primary full"
+        type="button"
+      >
+        LOG MASUK
+      </button>
+
+      <button
+        class="secondary full"
+        type="button"
+        onclick="window.location.href='../index.html'"
+      >
+        KEMBALI
+      </button>
+
+      <div class="info-box">
+        PIN awal: <strong>1515</strong>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script type="module">
+    const PIN_KEY =
+      "c01_teacher_pin_v2";
+
+    const SESSION_KEY =
+      "c01_teacher_session_v2";
+
+    const teacherName =
+      document.getElementById(
+        "teacherName"
+      );
+
+    const teacherPin =
+      document.getElementById(
+        "teacherPin"
+      );
+
+    const loginButton =
+      document.getElementById(
+        "loginButton"
+      );
+
+    const loginMessage =
+      document.getElementById(
+        "loginMessage"
+      );
+
+    loginButton.addEventListener(
+      "click",
+      loginTeacher
+    );
+
+    teacherPin.addEventListener(
+      "keydown",
+      function (event) {
+        if (event.key === "Enter") {
+          loginTeacher();
+        }
+      }
+    );
+
+    async function loginTeacher() {
+      const name =
+        teacherName.value.trim();
+
+      const pin =
+        teacherPin.value.trim();
+
+      loginMessage.textContent = "";
+
+      if (!name) {
+        loginMessage.textContent =
+          "Sila masukkan nama Pegawai Penilai.";
+
+        teacherName.focus();
+        return;
+      }
+
+      if (!pin) {
+        loginMessage.textContent =
+          "Sila masukkan PIN guru.";
+
+        teacherPin.focus();
+        return;
+      }
+
+      const savedPin =
+        localStorage.getItem(
+          PIN_KEY
+        ) || "1515";
+
+      if (pin !== savedPin) {
+        loginMessage.textContent =
+          "PIN guru tidak tepat.";
+
+        teacherPin.focus();
+        return;
+      }
+
+      loginButton.disabled = true;
+      loginButton.textContent =
+        "SEDANG MENYAMBUNG...";
+
+      loginMessage.textContent =
+        "Sedang menyambung ke Firebase...";
+
+      try {
+        const firebaseModule =
+          await import(
+            "../firebase-config.js?v=20260805-2"
+          );
+
+        if (
+          typeof firebaseModule
+            .ensureFirebaseLogin !==
+          "function"
+        ) {
+          throw new Error(
+            "Fungsi Firebase login tidak ditemui."
+          );
+        }
+
+        const user =
+          await firebaseModule
+            .ensureFirebaseLogin();
+
+        sessionStorage.setItem(
+          SESSION_KEY,
+          JSON.stringify({
+            name: name,
+            uid: user.uid,
+            loginAt:
+              new Date().toISOString()
+          })
+        );
+
+        loginMessage.textContent =
+          "Login berjaya. Membuka dashboard...";
+
+        window.location.href =
+          "dashboard.html?v=20260805-2";
+
+      } catch (error) {
+        console.error(
+          "Login guru gagal:",
+          error
+        );
+
+        loginMessage.textContent =
+          "Firebase gagal dimuatkan. Semak fail firebase-config.js dan sambungan Internet.";
+
+        loginButton.disabled = false;
+        loginButton.textContent =
+          "CUBA SEMULA";
+      }
+    }
+  </script>
+
+</body>
+</html>
