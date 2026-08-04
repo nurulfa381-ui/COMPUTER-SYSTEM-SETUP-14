@@ -1,1 +1,9 @@
-
+import { C01FirebaseStorage } from "./firebase-storage.js";
+const KEY="c01_kp14_profile_v1";
+let busy=false,timer=null;
+function profile(){try{return JSON.parse(localStorage.getItem(KEY)||"null")}catch(e){return null}}
+function assessment(p){const d=p?.pendingAssessments?.[14]||p?.ktDetails?.[14];const score=d?.score??d?.percentage??p?.scores?.[14];if(score===undefined)return null;return{missionId:14,score:Number(score)||0,sectionA:Number(d?.sectionA??0),sectionB:Number(d?.sectionB??0),sectionC:Number(d?.sectionC??0),sectionD:Number(d?.sectionD??0),attempt:Number(d?.attempt??p?.attempts?.[14]??1),passed:Boolean(d?.passed??Number(score)>=60),status:d?.status??(Number(score)>=60?"MENUNGGU_PENGESAHAN":"BELUM_TERAMPIL"),details:{source:"kp14-overlay"}}}
+async function sync(){if(busy)return;const p=profile();if(!p?.name||!p?.id)return;busy=true;try{await C01FirebaseStorage.saveStudentProfile({name:p.name,id:p.id,studentId:p.id,avatar:p.avatar||"🧑‍💻",language:"ms",xp:p.xp||50,coins:p.coins||0,currentMission:14,repository:location.pathname.split('/').filter(Boolean)[0]});const a=assessment(p);if(a)await C01FirebaseStorage.saveKTScore(a)}catch(e){console.error("Firebase sync KT14 gagal:",e)}finally{busy=false}}
+const original=localStorage.setItem.bind(localStorage);localStorage.setItem=function(k,v){original(k,v);if(k===KEY){clearTimeout(timer);timer=setTimeout(sync,300)}};
+document.addEventListener("DOMContentLoaded",async()=>{await sync();C01FirebaseStorage.listenToStudentAssessment(14,a=>{if(!a?.official||!a?.locked)return;const p=profile();if(!p)return;p.officialMarks=p.officialMarks||{};p.pendingAssessments=p.pendingAssessments||{};p.scores=p.scores||{};p.officialMarks[14]={score:a.score,status:a.status,assessor:a.assessor||"Pegawai Penilai",verifiedAt:a.verifiedAt?.toDate?a.verifiedAt.toDate().toISOString():new Date().toISOString(),locked:true};p.scores[14]=a.score;delete p.pendingAssessments[14];original(KEY,JSON.stringify(p));location.reload()})});
+window.C01FirebaseSync={syncNow:sync};
